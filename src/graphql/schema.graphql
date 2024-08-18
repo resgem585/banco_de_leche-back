@@ -1,14 +1,69 @@
+# schema.graphql
+
 type User {
   id: ID!
   email: String!
+  password: String!
   isAdmin: Boolean!
+}
+
+type Donante {
+  id: ID!
+  tipo: String
+  firstName: String
+  lastName: String
+  edad: Int
+  direccion: String
+  ocupacion: String
+  partos: Int
+  cesareas: Int
+  apellidosRNLactante: String
+  sdg: Int
+  fechaNacimRN: String
+  complicacionesEmbarazo: String
+  transfusionesUltimos5Anos: String
+  tatuajesPiercingsAcupunturaUltimoAno: String
+  tratamientoMedico: String
+  pruebaRapidaSifilis: String
+  pruebaRapidaVIH: String
+  pruebaRapidaHepatitisC: String
+  observaciones: String
+  createdAt: String
+  updatedAt: String
 }
 
 type Query {
   users: [User!]!
   login(email: String!, password: String!): User!
+  donantes: [Donante!]!
+  donante(id: ID!): Donante
 }
 
 type Mutation {
   createUser(email: String!, password: String!, isAdmin: Boolean): User!
+  createDonante(input: DonanteInput!): Donante!
+  updateDonante(id: ID!, input: DonanteInput!): Donante!
+  deleteDonante(id: ID!): String!
+}
+
+input DonanteInput {
+  tipo: String
+  firstName: String
+  lastName: String
+  edad: Int
+  direccion: String
+  ocupacion: String
+  partos: Int
+  cesareas: Int
+  apellidosRNLactante: String
+  sdg: Int
+  fechaNacimRN: String
+  complicacionesEmbarazo: String
+  transfusionesUltimos5Anos: String
+  tatuajesPiercingsAcupunturaUltimoAno: String
+  tratamientoMedico: String
+  pruebaRapidaSifilis: String
+  pruebaRapidaVIH: String
+  pruebaRapidaHepatitisC: String
+  observaciones: String
 }

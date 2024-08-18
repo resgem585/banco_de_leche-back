@@ -1,5 +1,6 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/User');
+import User from '../models/User.js';
+import Donante from '../models/Donante.js';
+import bcrypt from 'bcrypt';
 
 const Query = {
   users: async () => {
@@ -17,9 +18,16 @@ const Query = {
       throw new Error('Invalid password');
     }
 
-    // Retornar el usuario si la autenticación es exitosa
     return user;
+  },
+
+  donantes: async () => {
+    return await Donante.find({});
+  },
+
+  donante: async (_, { id }) => {
+    return await Donante.findById(id);
   },
 };
 
-module.exports = Query;
+export default Query;
