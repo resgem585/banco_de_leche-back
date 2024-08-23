@@ -3,31 +3,18 @@ import Donante from '../models/Donante.js';
 import bcrypt from 'bcrypt';
 
 const Query = {
-  users: async () => {
-    return await User.find({});
-  },
+  async getUser() {
+    const users = await User.find()
+    return users
+},    
 
-  login: async (_, { email, password }) => {
-    const user = await User.findOne({ email });
-    if (!user) {
-      throw new Error('User not found');
-    }
+async login(_,{email,password} ) {
+    const verifyUser = await User.findOne( { email, password } ); //
+    console.log(verifyUser)
+     return verifyUser
+},
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      throw new Error('Invalid password');
-    }
-
-    return user;
-  },
-
-  donantes: async () => {
-    return await Donante.find({});
-  },
-
-  donante: async (_, { id }) => {
-    return await Donante.findById(id);
-  },
 };
 
 export default Query;
+
