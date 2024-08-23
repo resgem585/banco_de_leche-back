@@ -1,14 +1,19 @@
 type User {
-  id: ID!
-  email: String!
-  isAdmin: Boolean!
+  _id: ID
+  email:String
+  password:String
 }
 
+
+
 type Query {
-  users: [User!]!
-  login(email: String!, password: String!): User!
+ getUser:[User]
+
+ 
+  login(email:String, password:String): User
 }
 
 type Mutation {
-  createUser(email: String!, password: String!, isAdmin: Boolean): User!
+  createUser(email: String!, password: String!): User!
+
 }

@@ -1,12 +1,14 @@
-// src/resolvers/Mutation.js
-const User = require('../models/User');
+
+import User from '../models/User.js';
+
 
 const Mutation = {
-  createUser: async (_, { email, password, isAdmin = false }) => {
-    const user = new User({ email, password, isAdmin });
-    await user.save();
-    return user;
-  },
+    // USER
+    async createUser(_, { email, password }) {
+        const newUser = { email, password };
+        const user = await User.create(newUser);
+        return user; // Regresa el usuario recién creado
+    },
 };
 
-module.exports = Mutation;
+export default Mutation;

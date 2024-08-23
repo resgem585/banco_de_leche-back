@@ -1,14 +1,18 @@
-const { createYoga } = require('graphql-yoga');
-const { createServer } = require('http');
-const { makeExecutableSchema } = require('@graphql-tools/schema');
-const { loadSchemaSync } = require('@graphql-tools/load');
-const { GraphQLFileLoader } = require('@graphql-tools/graphql-file-loader');
-const path = require('path');
-const Query = require('./resolvers/Query');
-const Mutation = require('./resolvers/Mutation');
-const db = require('./db');
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { createYoga } from 'graphql-yoga';
+import { createServer } from 'http';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { loadSchemaSync } from '@graphql-tools/load';
+import { GraphQLFileLoader } from '@graphql-tools/graphql-file-loader';
+import Query from './resolvers/Query.js';
+import Mutation from './resolvers/Mutation.js';
+import db from './db.js';
 
-// Cargar el esquema desde schema.graphql
+// Definir __dirname para ES Modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const typeDefs = loadSchemaSync(path.join(__dirname, 'graphql/schema.graphql'), {
   loaders: [new GraphQLFileLoader()],
 });
