@@ -1,9 +1,9 @@
 
 import User from '../models/User.js';
+import Donante from '../models/Donante.js'; 
 
 
 const Mutation = {
-    // USER
    // USER
    async createUser(_, {email, password }){
     const newUser = { email, password}
@@ -21,7 +21,23 @@ async deleteUser( _, {_id}){
     }
     return user
 
-}
+},
+ // Donante
+createDonante: async (_, { input }) => {
+    const donante = new Donante(input);
+    await donante.save();
+    return donante;
+  },
+
+  updateDonante: async (_, { id, input }) => {
+    const donante = await Donante.findByIdAndUpdate(id, input, { new: true });
+    return donante;
+  },
+
+  deleteDonante: async (_, { id }) => {
+    await Donante.findByIdAndDelete(id);
+    return "Donante eliminado con éxito";
+  },
 }
 
 export default Mutation;

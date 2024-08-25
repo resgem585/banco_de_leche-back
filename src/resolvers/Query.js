@@ -14,6 +14,14 @@ async login(_,{email,password} ) {
      return verifyUser
 },
 
+donantes: async () => {
+  return await Donante.find({});
+},
+
+donante: async (_, { id }) => {
+  return await Donante.findById(id);
+},
+
 };
 
 export default Query;
