@@ -1,11 +1,11 @@
 type User {
   _id: ID
-  email:String
-  password:String
+  email: String
+  password: String
 }
 
 type Donante {
-  id: ID!
+  _id: ID!
   tipo: String
   firstName: String
   lastName: String
@@ -29,30 +29,29 @@ type Donante {
   updatedAt: String
 }
 
+# Consultas disponibles
 type Query {
- getUser:[User]
- donantes: [Donante!]!
- donante(id: ID!): Donante
+  getUser: [User]
+  donantes: [Donante!]!
+  donante(id: ID!): Donante
 
- 
-  login(email:String, password:String): User
+  login(email: String, password: String): User
 }
 
+# Mutaciones disponibles
 type Mutation {
+  # Usuario
   createUser(email: String!, password: String!): User!
+  updateUser(_id: ID!, email: String, password: String): User
+  deleteUser(_id: ID!): User
 
-  #Update
-  updateUser(_id: ID, email:String, password:String): User
-
-  #Delete
-  deleteUser(_id: ID): User
-
+  # Donante
   createDonante(input: DonanteInput!): Donante!
   updateDonante(id: ID!, input: DonanteInput!): Donante!
   deleteDonante(id: ID!): String!
-
 }
 
+# Input para los datos de Donante
 input DonanteInput {
   tipo: String
   firstName: String
