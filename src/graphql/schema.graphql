@@ -47,8 +47,8 @@ type Mutation {
 
   # Donante
   createDonante(input: DonanteInput!): Donante!
-  updateDonante(input: DonanteInput!): Donante!
-  deleteDonante(_id: ID!): String!
+  updateDonante(id: ID!, input: DonanteInput!): Donante!
+  deleteDonante(id: ID!): String!
 }
 
 # Input para los datos de Donante

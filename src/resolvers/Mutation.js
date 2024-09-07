@@ -30,11 +30,14 @@ const Mutation = {
 
   updateDonante: async (_, { id, input }) => {
     const donante = await Donante.findByIdAndUpdate(id, input, { new: true });
+    if (!donante) {
+      throw new Error('Donante no encontrado');
+    }
     return donante;
   },
 
-  deleteDonante: async (_, { _id }) => {
-    const donante = await Donante.findByIdAndDelete(_id); // Cambié `id` por `_id`
+  deleteDonante: async (_, { id }) => {
+    const donante = await Donante.findByIdAndDelete(id); // Cambié `id` por `_id`
     if (!donante) {
       throw new Error('Donante no encontrado');
     }
