@@ -37,12 +37,12 @@ const Mutation = {
   },
 
   deleteDonante: async (_, { id }) => {
-    const donante = await Donante.findByIdAndDelete(id); // Cambié `id` por `_id`
+    const donante = await Donante.findByIdAndDelete(id); // Asegúrate de usar `id` y no `_id` en el resolver
     if (!donante) {
       throw new Error('Donante no encontrado');
     }
     return "Donante eliminado con éxito";
-  },
+  }
 };
 
 export default Mutation;
