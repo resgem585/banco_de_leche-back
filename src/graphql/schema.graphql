@@ -1,3 +1,4 @@
+# Definición de tipos
 type User {
   _id: ID
   email: String
@@ -34,7 +35,6 @@ type Query {
   getUser: [User]
   donantes: [Donante!]!
   donante(id: ID!): Donante
-
   login(email: String, password: String): User
 }
 
@@ -47,8 +47,8 @@ type Mutation {
 
   # Donante
   createDonante(input: DonanteInput!): Donante!
-  updateDonante(id: ID!, input: DonanteInput!): Donante!
-  deleteDonante(id: ID!): String!
+  updateDonante(input: DonanteInput!): Donante!
+  deleteDonante(_id: ID!): String!
 }
 
 # Input para los datos de Donante
