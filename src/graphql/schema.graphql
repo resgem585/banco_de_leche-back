@@ -48,7 +48,7 @@ type Control {
   crematocrito: Float!
   acidezDornic: Float!
   observaciones: String
-  donante: Donante!  # Relación uno a uno con Donante
+  donante: Donante  # Relación uno a uno con Donante
   createdAt: String
   updatedAt: String
 }

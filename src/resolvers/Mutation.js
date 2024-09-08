@@ -47,32 +47,41 @@ const Mutation = {
 
   // CONTROL
   createControl: async (_, { input }) => {
-    const { donanteId, ...controlData } = input;
-
-    // Verificar si el donante existe
-    const donante = await Donante.findById(donanteId);
-    if (!donante) {
-      throw new Error('Donante no encontrado');
+    try {
+      const { donanteId, ...controlData } = input;
+  
+      // Verificar si el donante existe
+      const donante = await Donante.findById(donanteId);
+      if (!donante) {
+        throw new Error('Donante no encontrado');
+      }
+  
+      // Verificar si el donante ya tiene un control
+      if (donante.control) {
+        throw new Error('El donante ya tiene un control asignado.');
+      }
+  
+      // Crear el control
+      const control = new Control({
+        ...controlData,
+        donanteId: donanteId,
+      });
+  
+      // Guardar el control en la base de datos
+      await control.save();
+  
+      // Asignar el control al donante y actualizar el donante en la base de datos
+      donante.control = control._id;
+      await donante.save();
+  
+      // Devolver el control creado
+      return control;
+    } catch (error) {
+      console.error('Error en createControl:', error);  // Log para depurar
+      throw new Error(`Error creando control: ${error.message}`);
     }
-
-    // Verificar si el donante ya tiene un control
-    if (donante.control) {
-      throw new Error('El donante ya tiene un control asignado.');
-    }
-
-    // Crear el control
-    const control = new Control({
-      ...controlData,
-      donanteId: donanteId,
-    });
-    await control.save();
-
-    // Asignar el control al donante
-    donante.control = control._id;
-    await donante.save();
-
-    return control;
   },
+  
 
   updateControl: async (_, { id, input }) => {
     const control = await Control.findByIdAndUpdate(id, input, { new: true });
