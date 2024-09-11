@@ -1,14 +1,12 @@
-# schema.graphql
-
+# Definición de tipos
 type User {
-  id: ID!
-  email: String!
-  password: String!
-  isAdmin: Boolean!
+  _id: ID
+  email: String
+  password: String
 }
 
 type Donante {
-  id: ID!
+  _id: ID!
   tipo: String
   firstName: String
   lastName: String
@@ -30,22 +28,81 @@ type Donante {
   observaciones: String
   createdAt: String
   updatedAt: String
+  control: Control
 }
 
+type Control {
+  _id: ID!
+  numeroLeche: String!
+  tipoLeche: String!
+  tipoDonacion: String!
+  donadora: String!
+  ml: Float!
+  fechaExtraccion: String!
+  horaExtraccion: String!
+  sdg: Int!
+  embalaje: String!
+  suciedad: String!
+  color: String!
+  olor: String!
+  crematocrito: Float!
+  acidezDornic: Float!
+  observaciones: String
+  donante: Donante  # Relación uno a uno con Donante
+  createdAt: String
+  updatedAt: String
+}
+
+# Inputs para crear o actualizar controles
+input ControlInput {
+  numeroLeche: String!
+  tipoLeche: String!
+  tipoDonacion: String!
+  donadora: String!
+  ml: Float!
+  fechaExtraccion: String!
+  horaExtraccion: String!
+  sdg: Int!
+  embalaje: String!
+  suciedad: String!
+  color: String!
+  olor: String!
+  crematocrito: Float!
+  acidezDornic: Float!
+  observaciones: String
+  donanteId: ID!
+}
+
+
+# Consultas disponibles
 type Query {
-  users: [User!]!
-  login(email: String!, password: String!): User!
+  getUser: [User]
   donantes: [Donante!]!
   donante(id: ID!): Donante
+  login(email: String, password: String): User
+  controles: [Control!]!
+  controlPorDonante(donanteId: ID!): Control # Obtener el control de un donante
 }
 
+# Mutaciones disponibles
 type Mutation {
-  createUser(email: String!, password: String!, isAdmin: Boolean): User!
+  # Usuario
+  createUser(email: String!, password: String!): User!
+  updateUser(_id: ID!, email: String, password: String): User
+  deleteUser(_id: ID!): User
+
+  # Donante
   createDonante(input: DonanteInput!): Donante!
   updateDonante(id: ID!, input: DonanteInput!): Donante!
   deleteDonante(id: ID!): String!
+
+  # Control
+  createControl(input: ControlInput!): Control!
+  updateControl(id: ID!, input: ControlInput!): Control!
+  deleteControl(id: ID!): String!
 }
 
+# Input para los datos de Donante
 input DonanteInput {
   tipo: String
   firstName: String
