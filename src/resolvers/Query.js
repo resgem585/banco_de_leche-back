@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import Donante from '../models/Donante.js';
 import Control from '../models/Control.js';
+import Crematocrito from '../models/Crematocrito.js';
 
 const Query = {
   // USER
@@ -50,7 +51,7 @@ const Query = {
   async control(_, { id }) {
     try {
       console.log('ID recibido en el resolver control:', id);
-      const control = await Control.findById(id);
+      const control = await Control.findById(id).populate('crematocritoData');
       if (!control) {
         throw new Error('Control no encontrado');
       }
@@ -61,15 +62,27 @@ const Query = {
     }
   },
 
-  async controlPorDonante(_, { donanteId }) {
+
+  // CREMATOCRITO
+  async crematocritos() {
     try {
-      const control = await Control.findOne({ donanteId }); // Suponiendo que solo puede haber un control por donante
-      if (!control) {
-        throw new Error('Control no encontrado para este donante');
-      }
-      return control;
+      const crematocritos = await Crematocrito.find({}).populate('numeroLeche'); // Poblamos el campo 'numeroLeche'
+      return crematocritos;
     } catch (error) {
-      throw new Error('Error al obtener el control del donante');
+      throw new Error('Error al obtener los crematocritos');
+    }
+  },
+
+  async crematocrito(_, { id }) {
+    try {
+      const crematocrito = await Crematocrito.findById(id).populate('numeroLeche');
+      if (!crematocrito) {
+        throw new Error('Crematocrito no encontrado');
+      }
+      return crematocrito;
+    } catch (error) {
+      console.error('Error al obtener el crematocrito:', error);
+      throw new Error('Error al obtener el crematocrito');
     }
   },
 };
