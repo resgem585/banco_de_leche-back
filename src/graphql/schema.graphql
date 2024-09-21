@@ -33,44 +33,44 @@ type Donante {
 
 type Control {
   _id: ID!
-  numeroLeche: String!
-  tipoLeche: String!
-  tipoDonacion: String!
-  donadora: String!
-  ml: Float!
-  fechaExtraccion: String!
-  horaExtraccion: String!
-  sdg: Int!
-  embalaje: String!
-  suciedad: String!
-  color: String!
-  olor: String!
-  crematocrito: Float!
-  acidezDornic: Float!
+  numeroLeche: String
+  tipoLeche: String
+  tipoDonacion: String
+  donadora: String
+  ml: Float
+  fechaExtraccion: String
+  horaExtraccion: String
+  sdg: Int
+  embalaje: String
+  suciedad: String
+  color: String
+  olor: String
+  crematocrito: Float
+  acidezDornic: Float
   observaciones: String
-  donante: Donante!  # Relación uno a uno con Donante
+  donante: Donante  # Relación uno a uno con Donante
   createdAt: String
   updatedAt: String
 }
 
 # Inputs para crear o actualizar controles
 input ControlInput {
-  numeroLeche: String!
-  tipoLeche: String!
-  tipoDonacion: String!
-  donadora: String!
-  ml: Float!
-  fechaExtraccion: String!
-  horaExtraccion: String!
-  sdg: Int!
-  embalaje: String!
-  suciedad: String!
-  color: String!
-  olor: String!
-  crematocrito: Float!
-  acidezDornic: Float!
+  numeroLeche: String
+  tipoLeche: String
+  tipoDonacion: String
+  donadora: String
+  ml: Float
+  fechaExtraccion: String
+  horaExtraccion: String
+  sdg: Int
+  embalaje: String
+  suciedad: String
+  color: String
+  olor: String
+  crematocrito: Float
+  acidezDornic: Float
   observaciones: String
-  donanteId: ID!
+  donanteId: ID
 }
 
 
