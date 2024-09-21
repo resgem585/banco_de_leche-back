@@ -3,6 +3,7 @@ import Donante from '../models/Donante.js';
 import Control from '../models/Control.js';
 
 const Query = {
+  // USER
   async getUser() {
     const users = await User.find();
     return users;
@@ -14,16 +15,16 @@ const Query = {
     return verifyUser;
   },
 
+  // DONANTE
   async donantes() {
     try {
       const donantes = await Donante.find({});
       return donantes;
     } catch (error) {
-      throw new Error("Error al obtener donantes");
+      throw new Error('Error al obtener donantes');
     }
   },
 
-  // Resolver para obtener un donante por ID
   async donante(_, { id }) {
     try {
       const donante = await Donante.findById(id);
@@ -36,17 +37,30 @@ const Query = {
     }
   },
 
-  // Obtener todos los controles
+  // CONTROL
   async controles() {
     try {
       const controles = await Control.find({});
       return controles;
     } catch (error) {
-      throw new Error("Error al obtener los controles");
+      throw new Error('Error al obtener los controles');
     }
   },
 
-  // Obtener el control de un donante por su ID
+  async control(_, { id }) {
+    try {
+      console.log('ID recibido en el resolver control:', id);
+      const control = await Control.findById(id);
+      if (!control) {
+        throw new Error('Control no encontrado');
+      }
+      return control;
+    } catch (error) {
+      console.error('Error en el resolver control:', error);
+      throw new Error('Error al obtener el control');
+    }
+  },
+
   async controlPorDonante(_, { donanteId }) {
     try {
       const control = await Control.findOne({ donanteId }); // Suponiendo que solo puede haber un control por donante
@@ -57,7 +71,7 @@ const Query = {
     } catch (error) {
       throw new Error('Error al obtener el control del donante');
     }
-  }
+  },
 };
 
 export default Query;

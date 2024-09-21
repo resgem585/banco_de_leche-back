@@ -48,7 +48,7 @@ type Control {
   crematocrito: Float!
   acidezDornic: Float!
   observaciones: String
-  donante: Donante  # Relación uno a uno con Donante
+  donante: Donante!  # Relación uno a uno con Donante
   createdAt: String
   updatedAt: String
 }
@@ -77,11 +77,12 @@ input ControlInput {
 # Consultas disponibles
 type Query {
   getUser: [User]
+  login(email: String, password: String): User
   donantes: [Donante!]!
   donante(id: ID!): Donante
-  login(email: String, password: String): User
   controles: [Control!]!
-  controlPorDonante(donanteId: ID!): Control # Obtener el control de un donante
+  control(id: ID!): Control
+  controlPorDonante(donanteId: ID!): Control
 }
 
 # Mutaciones disponibles

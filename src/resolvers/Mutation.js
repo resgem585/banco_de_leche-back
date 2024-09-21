@@ -84,12 +84,20 @@ const Mutation = {
   
 
   updateControl: async (_, { id, input }) => {
-    const control = await Control.findByIdAndUpdate(id, input, { new: true });
-    if (!control) {
-      throw new Error('Control no encontrado');
+    try {
+      // Excluir donanteId si está vacío o no proporcionado
+      if (!input.donanteId || input.donanteId === '') {
+        delete input.donanteId;
+      }
+  
+      const updatedControl = await Control.findByIdAndUpdate(id, input, { new: true });
+      return updatedControl;
+    } catch (error) {
+      console.error('Error actualizando control:', error);
+      throw new Error(`Error actualizando control: ${error.message}`);
     }
-    return control;
   },
+  
 
   deleteControl: async (_, { id }) => {
     const control = await Control.findByIdAndDelete(id);
