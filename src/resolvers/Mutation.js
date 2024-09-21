@@ -1,13 +1,14 @@
 import User from '../models/User.js';
 import Donante from '../models/Donante.js';
 import Control from '../models/Control.js';
+import Crematocrito from '../models/Crematocrito.js';
 
 const Mutation = {
   // USER
   async createUser(_, { email, password }) {
     const newUser = { email, password };
     const user = await User.create(newUser);
-    return user;  // Regresa solo el usuario creado
+    return user;
   },
 
   async updateUser(_, { _id, email, password }) {
@@ -77,11 +78,10 @@ const Mutation = {
       // Devolver el control creado
       return control;
     } catch (error) {
-      console.error('Error en createControl:', error);  // Log para depurar
+      console.error('Error en createControl:', error);
       throw new Error(`Error creando control: ${error.message}`);
     }
   },
-  
 
   updateControl: async (_, { id, input }) => {
     try {
@@ -91,13 +91,15 @@ const Mutation = {
       }
   
       const updatedControl = await Control.findByIdAndUpdate(id, input, { new: true });
+      if (!updatedControl) {
+        throw new Error('Control no encontrado');
+      }
       return updatedControl;
     } catch (error) {
       console.error('Error actualizando control:', error);
       throw new Error(`Error actualizando control: ${error.message}`);
     }
   },
-  
 
   deleteControl: async (_, { id }) => {
     const control = await Control.findByIdAndDelete(id);
@@ -112,6 +114,61 @@ const Mutation = {
     );
 
     return "Control eliminado con éxito";
+  },
+
+  // CREMATOCRITO
+  createCrematocrito: async (_, { input }) => {
+    try {
+      const { numeroLeche, ...crematocritoData } = input;
+
+      // Verificar si el control existe
+      const control = await Control.findById(numeroLeche);
+      if (!control) {
+        throw new Error('Control no encontrado');
+      }
+
+      // Verificar si ya existe un crematocrito para este control
+      const existingCrematocrito = await Crematocrito.findOne({ numeroLeche });
+      if (existingCrematocrito) {
+        throw new Error('Ya existe un crematocrito asociado a este control.');
+      }
+
+      // Crear el crematocrito
+      const crematocrito = new Crematocrito({
+        numeroLeche: control._id,  // Relación con el control
+        ...crematocritoData,
+      });
+
+      // Guardar el crematocrito en la base de datos
+      await crematocrito.save();
+
+      return crematocrito;
+    } catch (error) {
+      console.error('Error en createCrematocrito:', error);
+      throw new Error(`Error creando crematocrito: ${error.message}`);
+    }
+  },
+
+  updateCrematocrito: async (_, { id, input }) => {
+    try {
+      const updatedCrematocrito = await Crematocrito.findByIdAndUpdate(id, input, { new: true });
+      if (!updatedCrematocrito) {
+        throw new Error('Crematocrito no encontrado');
+      }
+      return updatedCrematocrito;
+    } catch (error) {
+      console.error('Error actualizando crematocrito:', error);
+      throw new Error(`Error actualizando crematocrito: ${error.message}`);
+    }
+  },
+
+  deleteCrematocrito: async (_, { id }) => {
+    const crematocrito = await Crematocrito.findByIdAndDelete(id);
+    if (!crematocrito) {
+      throw new Error('Crematocrito no encontrado');
+    }
+
+    return "Crematocrito eliminado con éxito";
   }
 };
 
