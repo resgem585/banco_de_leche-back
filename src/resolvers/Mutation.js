@@ -120,34 +120,35 @@ const Mutation = {
   createCrematocrito: async (_, { input }) => {
     try {
       const { numeroLeche, ...crematocritoData } = input;
-
+  
       // Verificar si el control existe
-      const control = await Control.findById(numeroLeche);
+      const control = await Control.findById(numeroLeche); // Asegúrate de que 'numeroLeche' contiene el ID del control
       if (!control) {
         throw new Error('Control no encontrado');
       }
-
+  
       // Verificar si ya existe un crematocrito para este control
       const existingCrematocrito = await Crematocrito.findOne({ numeroLeche });
       if (existingCrematocrito) {
         throw new Error('Ya existe un crematocrito asociado a este control.');
       }
-
+  
       // Crear el crematocrito
       const crematocrito = new Crematocrito({
         numeroLeche: control._id,  // Relación con el control
         ...crematocritoData,
       });
-
+  
       // Guardar el crematocrito en la base de datos
       await crematocrito.save();
-
+  
       return crematocrito;
     } catch (error) {
       console.error('Error en createCrematocrito:', error);
       throw new Error(`Error creando crematocrito: ${error.message}`);
     }
   },
+  
 
   updateCrematocrito: async (_, { id, input }) => {
     try {
