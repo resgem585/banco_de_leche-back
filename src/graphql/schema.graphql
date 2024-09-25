@@ -1,4 +1,5 @@
 # Definición de tipos
+
 type User {
   _id: ID
   email: String
@@ -48,15 +49,16 @@ type Control {
   crematocrito: Float
   acidezDornic: Float
   observaciones: String
-  donante: Donante  # Relación uno a uno con Donante
+  donante: Donante            # Relación uno a uno con Donante
   crematocritoData: Crematocrito  # Relación uno a uno con Crematocrito
+  acidezDornicData: AcidezDornic  # Relación uno a uno con AcidezDornic
   createdAt: String
   updatedAt: String
 }
 
 type Crematocrito {
   _id: ID!
-  numeroLeche: Control  # Relación con el modelo Control
+  numeroLeche: Control         # Relación con el modelo Control
   columnaTotal1: Float
   columnaTotal2: Float
   columnaTotal3: Float
@@ -69,6 +71,20 @@ type Crematocrito {
   porcentajeGrasa: Float
   kcalLitro: Float
   observaciones: String
+  createdAt: String
+  updatedAt: String
+}
+
+type AcidezDornic {
+  _id: ID!
+  numeroLeche: Control         # Relación con el modelo Control
+  m1: Float
+  m2: Float
+  m3: Float
+  prom: Float
+  fact: Float
+  resultado: Float
+  obs: String
   createdAt: String
   updatedAt: String
 }
@@ -95,7 +111,7 @@ input ControlInput {
 
 # Inputs para crear o actualizar crematocritos
 input CrematocritoInput {
-  numeroLeche: ID  # Relación con el ID de Control
+  numeroLeche: ID             # Relación con el ID de Control
   columnaTotal1: Float
   columnaTotal2: Float
   columnaTotal3: Float
@@ -108,6 +124,18 @@ input CrematocritoInput {
   porcentajeGrasa: Float
   kcalLitro: Float
   observaciones: String
+}
+
+# Inputs para crear o actualizar acidez dornic
+input AcidezDornicInput {
+  numeroLeche: ID             # Relación con el ID de Control
+  m1: Float
+  m2: Float
+  m3: Float
+  prom: Float
+  fact: Float
+  resultado: Float
+  obs: String
 }
 
 # Input para los datos de Donante
@@ -144,6 +172,8 @@ type Query {
   controlPorDonante(donanteId: ID!): Control
   crematocritos: [Crematocrito!]!
   crematocrito(id: ID!): Crematocrito
+  acidecesDornic: [AcidezDornic!]!
+  acidezDornic(id: ID!): AcidezDornic
 }
 
 # Mutaciones disponibles
@@ -167,4 +197,9 @@ type Mutation {
   createCrematocrito(input: CrematocritoInput!): Crematocrito!
   updateCrematocrito(id: ID!, input: CrematocritoInput!): Crematocrito!
   deleteCrematocrito(id: ID!): String!
+
+  # Acidez Dornic
+  createAcidezDornic(input: AcidezDornicInput!): AcidezDornic!
+  updateAcidezDornic(id: ID!, input: AcidezDornicInput!): AcidezDornic!
+  deleteAcidezDornic(id: ID!): String!
 }

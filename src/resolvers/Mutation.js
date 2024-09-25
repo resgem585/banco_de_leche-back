@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Donante from '../models/Donante.js';
 import Control from '../models/Control.js';
 import Crematocrito from '../models/Crematocrito.js';
+import AcidezDornic from '../models/AcidezDornic.js'; // Importar el modelo AcidezDornic
 
 const Mutation = {
   // USER
@@ -170,7 +171,62 @@ const Mutation = {
     }
 
     return "Crematocrito eliminado con éxito";
-  }
+  },
+
+  // ACIDEZ DORNIC
+  createAcidezDornic: async (_, { input }) => {
+    try {
+      const { numeroLeche, ...acidezDornicData } = input;
+
+      // Verificar si el control existe
+      const control = await Control.findById(numeroLeche); // 'numeroLeche' debe contener el ID del control
+      if (!control) {
+        throw new Error('Control no encontrado');
+      }
+
+      // Verificar si ya existe un registro de acidez dornic para este control
+      const existingAcidezDornic = await AcidezDornic.findOne({ numeroLeche });
+      if (existingAcidezDornic) {
+        throw new Error('Ya existe un registro de acidez dornic asociado a este control.');
+      }
+
+      // Crear el registro de acidez dornic
+      const acidezDornic = new AcidezDornic({
+        numeroLeche: control._id, // Relación con el control
+        ...acidezDornicData,
+      });
+
+      // Guardar el registro en la base de datos
+      await acidezDornic.save();
+
+      return acidezDornic;
+    } catch (error) {
+      console.error('Error en createAcidezDornic:', error);
+      throw new Error(`Error creando acidez dornic: ${error.message}`);
+    }
+  },
+
+  updateAcidezDornic: async (_, { id, input }) => {
+    try {
+      const updatedAcidezDornic = await AcidezDornic.findByIdAndUpdate(id, input, { new: true });
+      if (!updatedAcidezDornic) {
+        throw new Error('Acidez Dornic no encontrada');
+      }
+      return updatedAcidezDornic;
+    } catch (error) {
+      console.error('Error actualizando acidez dornic:', error);
+      throw new Error(`Error actualizando acidez dornic: ${error.message}`);
+    }
+  },
+
+  deleteAcidezDornic: async (_, { id }) => {
+    const acidezDornic = await AcidezDornic.findByIdAndDelete(id);
+    if (!acidezDornic) {
+      throw new Error('Acidez Dornic no encontrada');
+    }
+
+    return "Acidez Dornic eliminada con éxito";
+  },
 };
 
 export default Mutation;

@@ -2,6 +2,7 @@ import User from '../models/User.js';
 import Donante from '../models/Donante.js';
 import Control from '../models/Control.js';
 import Crematocrito from '../models/Crematocrito.js';
+import AcidezDornic from '../models/AcidezDornic.js'; // Importar el modelo AcidezDornic
 
 const Query = {
   // USER
@@ -96,7 +97,31 @@ const Query = {
       console.error('Error en el resolver crematocrito:', error);
       throw new Error(`Error al obtener el crematocrito: ${error.message}`);
     }
-  }
+  },
+
+  // ACIDEZ DORNIC
+  async acidecesDornic() {
+    try {
+      const acidecesDornic = await AcidezDornic.find({}).populate('numeroLeche'); // Populate para mostrar el control asociado
+      return acidecesDornic;
+    } catch (error) {
+      throw new Error('Error al obtener los registros de Acidez Dornic');
+    }
+  },
+
+  async acidezDornic(_, { id }) {
+    try {
+      console.log('ID recibido en el resolver acidezDornic:', id);
+      const acidezDornic = await AcidezDornic.findById(id);
+      if (!acidezDornic) {
+        throw new Error('Acidez Dornic no encontrada');
+      }
+      return acidezDornic;
+    } catch (error) {
+      console.error('Error en el resolver acidezDornic:', error);
+      throw new Error(`Error al obtener el registro de Acidez Dornic: ${error.message}`);
+    }
+  },
 };
 
 export default Query;
