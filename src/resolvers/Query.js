@@ -86,13 +86,15 @@ const Query = {
 
   async crematocrito(_, { id }) {
     try {
-      const crematocrito = await Crematocrito.findById(id).populate('numeroLeche'); // Populate para mostrar el control asociado
+      console.log('ID recibido en el resolver crematocrito:', id);
+      const crematocrito = await Crematocrito.findById(id);
       if (!crematocrito) {
         throw new Error('Crematocrito no encontrado');
       }
       return crematocrito;
     } catch (error) {
-      throw new Error('Error al obtener el crematocrito');
+      console.error('Error en el resolver crematocrito:', error);
+      throw new Error(`Error al obtener el crematocrito: ${error.message}`);
     }
   }
 };

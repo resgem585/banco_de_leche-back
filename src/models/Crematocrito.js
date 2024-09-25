@@ -57,7 +57,7 @@ const CrematocritoSchema = new mongoose.Schema({
       'NA',
       'ACIDEZ ˃8°D',
       'PRECIPITACION DE CASEINA',
-      'MAL OLOR (VOMITO)',
+      'MAL OLOR',
       'VOLUMEN INSUFICIENTE',
     ],  // Opciones de observaciones según la tabla
     default: 'NA',  // Valor por defecto
